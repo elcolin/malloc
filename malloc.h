@@ -25,11 +25,11 @@ typedef enum e_bool{
     TRUE
 } t_bool;
 
-typedef enum e_heap{
-    TINY,
-    SMALL,
-    LARGE
-} t_heap_block;
+// typedef enum e_heap{
+//     TINY,
+//     SMALL,
+//     LARGE
+// } t_heap_block;
 
 typedef struct s_heap{
     struct s_heap   *prev;
@@ -42,12 +42,12 @@ typedef struct s_heap{
 typedef struct s_block{
     struct s_block  *prev;
     struct s_block  *next;
-    size_t  size;
+    size_t  data_size;
     t_bool    freed;
 } t_block;
 
 
 void error(t_bool err, char *msg);
-void *malloc(size_t size);
+void *mmalloc(size_t size);
 
 #endif
