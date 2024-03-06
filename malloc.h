@@ -49,5 +49,6 @@ typedef struct s_block{
 
 void error(t_bool err, char *msg);
 void *mmalloc(size_t size);
+void ffree(void *ptr);
 
 #endif

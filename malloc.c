@@ -4,8 +4,7 @@
 
 // }
 
-t_heap *heap = 0;
-
+t_heap *heap_lst = 0;
 
 size_t determine_heap_size(size_t elem_size)
 {
@@ -16,72 +15,127 @@ size_t determine_heap_size(size_t elem_size)
     return 0;
 }
 
-void new_heap(size_t heap_size)
-{  
-    heap = (t_heap *)mmap(NULL, heap_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
-    heap->prev = NULL;
-    heap->next = NULL;
-    heap->block_count = 0;
-    heap->total_size =  heap_size - sizeof(t_heap);
-    heap->free_size = heap_size - sizeof(t_heap);
-
-}
 
 t_block *last_block_index(t_block *first)
 {
+    t_block *index = first;
+    if (!index)
+        return NULL;
+    while(index->next)
+        index = index->next;
+    if (index == first && !first->data_size)
+        return NULL;
+    return index;
+}
+
+t_heap *last_heap_index(t_heap *first)
+{
+    if (!first)
+        return NULL;
     while(first->next)
         first = first->next;
     return first;
 }
 
-t_block *valid_free_block(t_block *first, size_t size)
+
+t_block *valid_free_block(t_block *first, size_t data_size)
 {
-    while (first->next)
+    if (!first)
+        return NULL;
+    while (first)
     {
-        if (first->freed == TRUE && first->data_size >= size)
+        if (first->freed == TRUE && first->data_size >= data_size)
             return first;
         first = first->next;
     }
     return NULL;
 }
 
-void *new_block(size_t block_size)
+t_block *valid_free_heap(size_t data_size)
 {
-    t_block *first_block = (t_block *)HEAP_SHIFT((void *)heap);
-    t_block *new_block = NULL;
-    if (heap->block_count)
+    t_heap *heap_index = heap_lst;
+    t_block *valid_block = 0;
+    while (heap_index)
     {
-        new_block = valid_free_block(first_block, block_size);
-        if (!new_block)//verifier si fin de heap et gestion
+        valid_block = valid_free_block(HEAP_SHIFT(heap_index), data_size);
+        if (valid_block)
         {
-            new_block = last_block_index(first_block);
-            heap->block_count++;
+            printf("Free block found\n");
+            return valid_block;
         }
+        heap_index = heap_index->next;
+    }
+    printf("No free blocks\n");
+    return NULL;
+}
+
+t_block *allocate_new_block(t_heap *available_heap, size_t data_size)
+{
+    t_block *new_block = 0;
+    t_block *last_block = last_block_index(HEAP_SHIFT(available_heap));
+
+    if (data_size + sizeof(t_block) > available_heap->free_size)
+    {
+        printf("/!\\ Heap lacking free space: Available: %ld\tTotal: %ld\n", available_heap->free_size, available_heap->total_size);
+        return NULL;
+    }
+    if (last_block)
+    {
+        printf("Appending new block\n");
+        new_block = BLOCK_SHIFT(last_block) + last_block->data_size;
+        new_block->prev = last_block;
+        last_block->next = new_block;
     }
     else
     {
-        new_block = first_block;
-        heap->block_count++;
+        printf("Creating first block\n");
+        new_block = HEAP_SHIFT(available_heap);
+        new_block->prev = NULL;
     }
-    new_block->data_size = block_size;
-    new_block->next = (t_block *)BLOCK_SHIFT(new_block) + block_size;
-    new_block->next->prev = new_block;
-    heap->free_size -= (sizeof(t_block) + block_size);
-    printf("Heap state:\nBlock Size: %ld\tBlock count: %ld\tTotal Size: %ld\tFree Size: %ld\n",sizeof(t_block) ,heap->block_count, heap->total_size, heap->free_size);
-    return (BLOCK_SHIFT(new_block));
+    new_block->next = NULL;
+    new_block->freed = FALSE;
+    available_heap->block_count++;
+    available_heap->free_size -= (data_size + sizeof(t_block));
+    new_block->data_size = data_size;
+    return new_block;
+}
 
+t_heap *allocate_new_heap(size_t heap_size)// go to last heap
+{  
+    t_heap *last_heap = last_heap_index(heap_lst);
+    t_heap  *new_heap = 0;
+
+    new_heap = (t_heap *)mmap(NULL, heap_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);// handle error
+    new_heap->prev = last_heap;
+    if (last_heap)
+    {
+        printf("~ Appending new heap: %ld ~\n", heap_size);
+        last_heap->next = new_heap;
+    }
+    else
+        printf("~ Creating new heap: %ld ~\n", heap_size);
+    new_heap->next = NULL;
+    new_heap->block_count = 0;
+    new_heap->total_size =  heap_size;
+    new_heap->free_size = heap_size - sizeof(t_heap);
+    ((t_block *)HEAP_SHIFT(new_heap))->data_size = 0;
+    return new_heap;
 }
 
 void *mmalloc(size_t size){
     if (!size)
         return NULL;
-    // size = (size + 15) & ~15;
-    if (!heap) // size > freesize
-        new_heap(determine_heap_size(size));
-    // printf("Heap state:\nBlock count: %ld\tTotal Size: %ld\tFree Size: %ld\n", heap->block_count, heap->total_size, heap->free_size);
-    return new_block(size);
+    // size = (size + 15) & ~15; // to get to the next multiple of 16
+    printf("-- Wanted size for new block: %ld --\n", size + sizeof(t_block));
+    if (!heap_lst) // If no heap create new heap
+        heap_lst = allocate_new_heap(determine_heap_size(size));
+    t_block *new_block = valid_free_heap(size);// looking for a block in each heap
+    if (!new_block)
+    {
+        t_heap *last_heap = last_heap_index(heap_lst);
+        new_block = allocate_new_block(last_heap, size);
+        if (!new_block)
+            new_block = allocate_new_block(allocate_new_heap(determine_heap_size(size)), size);
+    }
+    return BLOCK_SHIFT(new_block);
 }
-
-// void *realloc(void *ptr, size_t size){
-
-// }
