@@ -4,9 +4,13 @@
 // #include <stdlib.h>
 #include <unistd.h>
 #include <sys/mman.h>
+#include <stdlib.h>
+#include <errno.h>
+
 
 #include <stdio.h>
 #include <string.h>
+
 
 #define HEAP_SHIFT(start) ((void *)start + sizeof(t_heap))
 #define BLOCK_SHIFT(start) ((void *)start + sizeof(t_block))
@@ -17,6 +21,9 @@
 
 #define SMALL_HEAP_ALLOCATION_SIZE (16 * getpagesize())
 #define SMALL_BLOCK_SIZE (SMALL_HEAP_ALLOCATION_SIZE / 128)
+
+
+#define LARGE_HEAP_ALLOCATION_SIZE (64 * getpagesize())
 
 // #define LARGE_HEAP_ALLO
 

@@ -46,9 +46,11 @@ int main(){
     int i = 0;
     int random;
     srand(time(NULL));
-    while (i < 5)
+    while (i < 100)
     {
-        random= rand() % 5000 + 1;
-        test = malloc(random);
+
+        random = rand() % 100000 + 1;
+        test = mmalloc(random);
+        i++;
     }
 }

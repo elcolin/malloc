@@ -12,7 +12,10 @@ size_t determine_heap_size(size_t elem_size)
         return TINY_HEAP_ALLOCATION_SIZE;
     else if (elem_size < SMALL_BLOCK_SIZE - sizeof(t_block))
         return SMALL_HEAP_ALLOCATION_SIZE;
-    return 0;
+    return LARGE_HEAP_ALLOCATION_SIZE;
+    // else
+        // printf("%ld is above %ld and %ld and %ld\n", elem_size, TINY_BLOCK_SIZE  - sizeof(t_block), SMALL_BLOCK_SIZE  - sizeof(t_block), LARGE_BLOCK_SIZE  - sizeof(t_block));
+    // return 0;(elem_size < LARGE_BLOCK_SIZE - sizeof(t_block))
 }
 
 
@@ -30,10 +33,12 @@ t_block *last_block_index(t_block *first)
 
 t_heap *last_heap_index(t_heap *first)
 {
+    // printf("b last heap index: %p\n", first);
     if (!first)
         return NULL;
     while(first->next)
         first = first->next;
+    // printf("a last heap index %p\n", first);
     return first;
 }
 
@@ -105,7 +110,14 @@ t_heap *allocate_new_heap(size_t heap_size)// go to last heap
     t_heap *last_heap = last_heap_index(heap_lst);
     t_heap  *new_heap = 0;
 
+    printf("determined heap size: %ld\n", heap_size);
     new_heap = (t_heap *)mmap(NULL, heap_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);// handle error
+    if (new_heap == MAP_FAILED) {
+        perror("mmap");
+        exit(EXIT_FAILURE);
+    }
+    printf("%p\n", last_heap);
+    printf("new_heap: %p\n", new_heap);
     new_heap->prev = last_heap;
     if (last_heap)
     {

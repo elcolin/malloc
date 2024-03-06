@@ -3,6 +3,8 @@
 
 void ffree(void *ptr)
 {
+    if(!ptr)
+        return;
     t_block *block_free = ptr - sizeof(t_block);
     block_free->freed = TRUE;
 
