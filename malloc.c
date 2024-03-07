@@ -116,7 +116,7 @@ t_heap *allocate_new_heap(size_t heap_size)// go to last heap
         perror("mmap");
         exit(EXIT_FAILURE);
     }
-    printf("%p\n", last_heap);
+    // printf("%p\n", last_heap);
     printf("new_heap: %p\n", new_heap);
     new_heap->prev = last_heap;
     if (last_heap)
@@ -125,7 +125,9 @@ t_heap *allocate_new_heap(size_t heap_size)// go to last heap
         last_heap->next = new_heap;
     }
     else
+    {
         printf("~ Creating new heap: %ld ~\n", heap_size);
+    }
     new_heap->next = NULL;
     new_heap->block_count = 0;
     new_heap->total_size =  heap_size;
@@ -138,7 +140,7 @@ void *mmalloc(size_t size){
     if (!size)
         return NULL;
     // size = (size + 15) & ~15; // to get to the next multiple of 16
-    printf("-- Wanted size for new block: %ld --\n", size + sizeof(t_block));
+    printf("-- Wanted size for new block: %ld\tdatasize: %ld--\n", size + sizeof(t_block), size);
     if (!heap_lst) // If no heap create new heap
         heap_lst = allocate_new_heap(determine_heap_size(size));
     t_block *new_block = valid_free_heap(size);// looking for a block in each heap
