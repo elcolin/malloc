@@ -24,7 +24,8 @@ t_block *find_free_block(size_t data_size)
         valid_block = search_valid_free_block(HEAP_SHIFT(get_heap), data_size);
         if (valid_block)
         {
-            printf("Free block found\n");
+            printf("Free block found: datasize: %ld\t addr: %p\n", valid_block->data_size, (void *)valid_block);
+            valid_block->freed = FALSE;
             return valid_block;
         }
         get_heap = get_heap->next;

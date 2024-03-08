@@ -22,7 +22,7 @@ int main(){
     while (i < 100)
     {
         printf("Allocating i: %d\n", i);
-        random = rand() % 100000 + 1;
+        random = rand() % 10000 + 1;
         test[i] = mmalloc(random + 1);
         i++;
     }
@@ -37,7 +37,7 @@ int main(){
     while (i < 50)
     {
         printf("Allocating i: %d\n", i);
-        random = rand() % 100000 + 1;
+        random = rand() % 10000 + 1;
         test[i] = mmalloc(random + 1);
         i++;
     }
