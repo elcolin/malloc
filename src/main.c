@@ -1,4 +1,4 @@
-#include "malloc.h"
+#include "../inc/malloc.h"
 
 #include "time.h"
 #include <stdlib.h>
@@ -16,9 +16,6 @@ void error(t_bool err, char *msg)
 int main(){
 
     void *test[100];
-    // size_t  test = (4 * getpagesize());
-    // printf("TINYBLOCK: %u\t", TINY_BLOCK_SIZE);
-    // printf("SMALLBLOCK: %u\n",SMALL_BLOCK_SIZE);
     int i = 0;
     int random;
     srand(time(NULL));
@@ -45,14 +42,19 @@ int main(){
         i++;
     }
     i = 0;
-    while (i < 100)
-    {
-        printf("Freeing i: %d\n", i);
-        ffree(test[i]);
-        i++;
-    }
+    ffree(test[2]);
+    ffree(test[8]);
+    ffree(test[49]);
+    ffree(test[9]);
+    // while (i < 100)
+    // {
+    //     printf("Freeing i: %d\n", i);
+    //     if (i != 2 && i !=8 && i!= 49 && i!= 9)
+    //         ffree(test[i]);
+    //     i++;
+    // }
     // ffree(test[8]);
     // ffree(test[50]);
     // ffree(test[9]);
-    
+    show_alloc_mem();
 }

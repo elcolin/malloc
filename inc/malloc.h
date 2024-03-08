@@ -22,9 +22,6 @@
 #define SMALL_HEAP_ALLOCATION_SIZE (16 * getpagesize())
 #define SMALL_BLOCK_SIZE (SMALL_HEAP_ALLOCATION_SIZE / 128)
 
-
-#define LARGE_HEAP_ALLOCATION_SIZE (64 * getpagesize())
-
 // #define LARGE_HEAP_ALLO
 
 typedef enum e_bool{
@@ -32,18 +29,19 @@ typedef enum e_bool{
     TRUE
 } t_bool;
 
-// typedef enum e_heap{
-//     TINY,
-//     SMALL,
-//     LARGE
-// } t_heap_block;
+typedef enum e_heap{
+    TINY,
+    SMALL,
+    LARGE
+} t_heap_size;
 
 typedef struct s_heap{
     struct s_heap   *prev;
     struct s_heap   *next;
     size_t  total_size;
     size_t  free_size;
-    size_t  block_count;
+    // size_t  block_count;
+    t_heap_size label_size;
 } t_heap;
 
 typedef struct s_block{
@@ -53,9 +51,21 @@ typedef struct s_block{
     t_bool    freed;
 } t_block;
 
-
+    // -- mandatory --
 void error(t_bool err, char *msg);
 void *mmalloc(size_t size);
 void ffree(void *ptr);
+void show_alloc_mem();
 
+    // -- block.c --
+t_block *allocate_new_block(t_heap *available_heap, size_t data_size);
+
+    // -- heap.c --
+t_heap *get_last_heap(t_heap *first);
+t_heap *allocate_new_heap(size_t heap_size);
+size_t determine_heap_size(size_t elem_size);
+
+    // -- find_free_block.c --
+t_block *find_free_block(size_t data_size);
+t_block *search_valid_free_block(t_block *first, size_t data_size);
 #endif
