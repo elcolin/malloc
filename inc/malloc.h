@@ -56,16 +56,27 @@ void error(t_bool err, char *msg);
 void *mmalloc(size_t size);
 void ffree(void *ptr);
 void show_alloc_mem();
+void *rrealloc(void *ptr, size_t size);
 
     // -- block.c --
 t_block *allocate_new_block(t_heap *available_heap, size_t data_size);
+t_block *get_first_block(t_block *block);
+// t_block *merge_next_block(t_block *block_to_merge);
+// t_block *merge_previous_block(t_block *block_to_merge);
+t_block *merge_block(t_block *block_to_merge);
 
     // -- heap.c --
 t_heap *get_last_heap(t_heap *first);
-t_heap *allocate_new_heap(size_t heap_size);
+// t_heap *allocate_new_heap(size_t heap_size);
+t_heap *allocate_new_heap(size_t heap_size, t_heap_size label);
 size_t determine_heap_size(size_t elem_size);
+t_heap_size get_heap_label_size(size_t size);
 
     // -- find_free_block.c --
 t_block *find_free_block(size_t data_size);
 t_block *search_valid_free_block(t_block *first, size_t data_size);
+
+    // -- ft_memcpy.c --
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+
 #endif

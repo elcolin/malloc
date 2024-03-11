@@ -15,30 +15,34 @@ void error(t_bool err, char *msg)
 
 int main(){
 
-    void *test[100];
+    char *test[100];
     int i = 0;
     int random;
     srand(time(NULL));
     while (i < 100)
     {
         printf("Allocating i: %d\n", i);
-        random = rand() % 10000 + 1;
-        test[i] = mmalloc(random + 1);
+        random = rand() % 1000 + 1;
+        test[i] = mmalloc(random);
+        for (int j = 0; j < random; j++)
+            test[i][j] = 0;
         i++;
     }
     i = 0;
-    while (i < 50)
-    {
-        printf("Freeing i: %d\n", i);
-        ffree(test[i]);
-        i++;
-    }
+    // while (i < 50)
+    // {
+    //     printf("Freeing i: %d\n", i);
+    //     ffree(test[i]);
+    //     i++;
+    // }
     i = 0;
     while (i < 50)
     {
-        printf("Allocating i: %d\n", i);
         random = rand() % 10000 + 1;
-        test[i] = mmalloc(random + 1);
+        printf("reallocating i: %d for size %d\n", i, random);
+        test[i] = rrealloc(test[i], random);
+        for (int j = 0; j < random; j++)
+            test[i][j] = 0;
         i++;
     }
     i = 0;

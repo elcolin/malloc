@@ -14,9 +14,9 @@ size_t determine_heap_size(size_t elem_size)
 
 t_heap_size get_heap_label_size(size_t size)
 {
-    if (size <= (size_t) TINY_HEAP_ALLOCATION_SIZE)
+    if (size <= (size_t) TINY_BLOCK_SIZE - sizeof(t_block))
         return TINY;
-    else if (size <= (size_t) SMALL_HEAP_ALLOCATION_SIZE)
+    else if (size <= (size_t) SMALL_BLOCK_SIZE - sizeof(t_block))
         return SMALL;
     return LARGE;
 }
@@ -30,7 +30,7 @@ t_heap *get_last_heap(t_heap *first)
     return first;
 }
 
-t_heap *allocate_new_heap(size_t heap_size)// go to last heap
+t_heap *allocate_new_heap(size_t heap_size, t_heap_size label)// go to last heap
 {  
     t_heap *last_heap = get_last_heap(heap_lst);
     t_heap  *new_heap = 0;
@@ -41,7 +41,7 @@ t_heap *allocate_new_heap(size_t heap_size)// go to last heap
         perror("mmap");
         exit(EXIT_FAILURE);
     }
-    new_heap->label_size = get_heap_label_size(heap_size);
+    new_heap->label_size = label;
     printf("new_heap: %p %d\n", new_heap, new_heap->label_size);
     new_heap->prev = last_heap;
     if (last_heap)

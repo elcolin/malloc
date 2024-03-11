@@ -30,22 +30,10 @@ void ffree(void *ptr)
     t_block *block_free = ptr - sizeof(t_block);
     block_free->freed = TRUE;
 
-    // printf("! Freed Block: %ld %p!\n", block_free->data_size, block_free);
     if (block_free->prev && block_free->prev->freed == TRUE)
-    {
-        block_free->prev->data_size += block_free->data_size + sizeof(t_block);
-        block_free->prev->next = block_free->next;
-        if (block_free->next)
-            block_free->next->prev = block_free->prev;
-        block_free = block_free->prev;
-    }
+        block_free = merge_block(block_free->prev);
     if (block_free->next && block_free->next->freed == TRUE)
-    {
-        block_free->data_size += block_free->next->data_size + sizeof(t_block);
-        block_free->next = block_free->next->next;
-        if (block_free->next)
-            block_free->next->prev = block_free;
-    }
+        block_free = merge_block(block_free);
     if (!block_free->next && !block_free->prev)
         free_heap((t_heap *)((void *)block_free - sizeof(t_heap)));
 }
