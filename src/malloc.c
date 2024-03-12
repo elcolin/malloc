@@ -7,7 +7,7 @@ void *mmalloc(size_t size){
         return NULL;
     t_block *new_block = 0;
     // size = (size + 15) & ~15; // to get to the next multiple of 16
-    printf("-- Wanted size for new block: %ld\tdatasize: %ld--\n", size + sizeof(t_block), size);
+    printf("-- Wanted size for new block: %ld\tdatasize: %ld--\n", size + BLOCK_SIZE, size);
     if (!heap_lst) // If no heap create new heap
         heap_lst = allocate_new_heap(determine_heap_size(size), get_heap_label_size(size));
     else

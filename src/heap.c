@@ -2,23 +2,36 @@
 
 extern t_heap *heap_lst;
 
-
 size_t determine_heap_size(size_t elem_size)
 {
-    if (elem_size <= TINY_BLOCK_SIZE - sizeof(t_block))
+    if (elem_size <= TINY_BLOCK_SIZE - BLOCK_SIZE)
         return TINY_HEAP_ALLOCATION_SIZE;
-    else if (elem_size <= SMALL_BLOCK_SIZE - sizeof(t_block))
+    else if (elem_size <= SMALL_BLOCK_SIZE - BLOCK_SIZE)
         return SMALL_HEAP_ALLOCATION_SIZE;
-    return (sizeof(t_heap) + elem_size + sizeof(t_block));
+    return (HEAP_SIZE + elem_size + BLOCK_SIZE);
 }
 
 t_heap_size get_heap_label_size(size_t size)
 {
-    if (size <= (size_t) TINY_BLOCK_SIZE - sizeof(t_block))
+    if (size <= (size_t) TINY_BLOCK_SIZE - BLOCK_SIZE)
         return TINY;
-    else if (size <= (size_t) SMALL_BLOCK_SIZE - sizeof(t_block))
+    else if (size <= (size_t) SMALL_BLOCK_SIZE - BLOCK_SIZE)
         return SMALL;
     return LARGE;
+}
+
+t_heap *get_heap_from_ptr(void *ptr)
+{
+    t_heap *index = heap_lst;
+    if (!index)
+        return NULL;
+    while (index)
+    {
+        if (HEAP_SHIFT(index) <= ptr && ((void *)index + index->total_size) > ptr)
+            return index;
+        index = index->next;
+    }
+    return NULL;
 }
 
 t_heap *get_last_heap(t_heap *first)
@@ -56,7 +69,7 @@ t_heap *allocate_new_heap(size_t heap_size, t_heap_size label)// go to last heap
     new_heap->next = NULL;
     // new_heap->block_count = 0;
     new_heap->total_size =  heap_size;
-    new_heap->free_size = heap_size - sizeof(t_heap);
+    new_heap->free_size = heap_size - HEAP_SIZE;
     ((t_block *)HEAP_SHIFT(new_heap))->data_size = 0;
     return new_heap;
 }

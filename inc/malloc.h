@@ -12,8 +12,11 @@
 #include <string.h>
 
 
-#define HEAP_SHIFT(start) ((void *)start + sizeof(t_heap))
-#define BLOCK_SHIFT(start) ((void *)start + sizeof(t_block))
+#define HEAP_SHIFT(start) ((void *)start + HEAP_SIZE)
+#define BLOCK_SHIFT(start) ((void *)start + BLOCK_SIZE)
+
+#define BLOCK_SIZE (sizeof(t_block))
+#define HEAP_SIZE (sizeof(t_heap))
 
 // BLOCK SIZE AND HEAP ALLOCATION
 #define TINY_HEAP_ALLOCATION_SIZE (4 * getpagesize())
@@ -63,6 +66,7 @@ t_block *allocate_new_block(t_heap *available_heap, size_t data_size);
 t_block *get_first_block(t_block *block);
 // t_block *merge_next_block(t_block *block_to_merge);
 // t_block *merge_previous_block(t_block *block_to_merge);
+void    cut_block(t_block *previous, size_t new_size);
 t_block *merge_block(t_block *block_to_merge);
 
     // -- heap.c --
@@ -71,6 +75,7 @@ t_heap *get_last_heap(t_heap *first);
 t_heap *allocate_new_heap(size_t heap_size, t_heap_size label);
 size_t determine_heap_size(size_t elem_size);
 t_heap_size get_heap_label_size(size_t size);
+t_heap *get_heap_from_ptr(void *ptr);
 
     // -- find_free_block.c --
 t_block *find_free_block(size_t data_size);
@@ -78,5 +83,8 @@ t_block *search_valid_free_block(t_block *first, size_t data_size);
 
     // -- ft_memcpy.c --
 void	*ft_memcpy(void *dst, const void *src, size_t n);
+
+    // -- map.c --
+t_bool is_mapped(void *ptr);
 
 #endif
