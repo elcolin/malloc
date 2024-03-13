@@ -20,20 +20,6 @@ t_heap_size get_heap_label_size(size_t size)
     return LARGE;
 }
 
-t_heap *get_heap_from_ptr(void *ptr)
-{
-    t_heap *index = heap_lst;
-    if (!index)
-        return NULL;
-    while (index)
-    {
-        if (HEAP_SHIFT(index) <= ptr && ((void *)index + index->total_size) > ptr)
-            return index;
-        index = index->next;
-    }
-    return NULL;
-}
-
 t_heap *get_last_heap(t_heap *first)
 {
     if (!first)
@@ -48,28 +34,29 @@ t_heap *allocate_new_heap(size_t heap_size, t_heap_size label)// go to last heap
     t_heap *last_heap = get_last_heap(heap_lst);
     t_heap  *new_heap = 0;
 
-    printf("determined heap size: %ld\n", heap_size);
+    // printf("determined heap size: %ld\n", heap_size);
     new_heap = (t_heap *)mmap(NULL, heap_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);// handle error
     if (new_heap == MAP_FAILED) {
         perror("mmap");
         exit(EXIT_FAILURE);
     }
     new_heap->label_size = label;
-    printf("new_heap: %p %d\n", new_heap, new_heap->label_size);
     new_heap->prev = last_heap;
     if (last_heap)
-    {
-        printf("~ Appending new heap: %ld ~\n", heap_size);
         last_heap->next = new_heap;
-    }
-    else
-    {
-        printf("~ Creating new heap: %ld ~\n", heap_size);
-    }
     new_heap->next = NULL;
-    // new_heap->block_count = 0;
     new_heap->total_size =  heap_size;
     new_heap->free_size = heap_size - HEAP_SIZE;
     ((t_block *)HEAP_SHIFT(new_heap))->data_size = 0;
     return new_heap;
 }
+    // printf("new_heap: %p %d\n", new_heap, new_heap->label_size);
+//  if (last_heap)
+//     {
+//         printf("~ Appending new heap: %ld ~\n", heap_size);
+//         last_heap->next = new_heap;
+//     }
+//     else
+//     {
+//         printf("~ Creating new heap: %ld ~\n", heap_size);
+//     }

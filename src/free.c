@@ -27,9 +27,10 @@ void ffree(void *ptr)
 {
     if(!ptr)
         return;
-    t_block *block_free = ptr - BLOCK_SIZE;
+    t_block *block_free = find_block(ptr);
+    if (!block_free)
+        return;
     block_free->freed = TRUE;
-
     if (block_free->prev && block_free->prev->freed == TRUE)
         block_free = merge_block(block_free->prev);
     if (block_free->next && block_free->next->freed == TRUE)

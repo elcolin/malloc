@@ -22,34 +22,13 @@ int main(){
     while (i < 100)
     {
         printf("\t-- Allocating i: %d --\n", i);
-        random = rand() % 1000 + 1;
+        random = rand() % 10 + 1;
         test[i] = mmalloc(random);
         for (int j = 0; j < random; j++)
             test[i][j] = 1;
         i++;
     }
-    i = 0;
-    // while (i < 50)
-    // {
-    //     printf("Freeing i: %d\n", i);
-    //     ffree(test[i]);
-    //     i++;
-    // }
-    i = 50;
-    // while (i < 100)
-    // {
-    //     random = rand() % 10 + 1;
-    //     printf("\t-- reallocating i: %d for size %d--\n", i, random);
-    //     test[i] = rrealloc(test[i], random);
-    //     for (int j = 0; j < random; j++)
-    //         test[i][j] = 0;
-    //     i++;
-    // }
     i = 25;
-    // ffree(test[2]);
-    // ffree(test[8]);
-    // ffree(test[49]);
-    // ffree(test[9]);
     while (i < 50)
     {
         printf("Freeing i: %d\n", i);
@@ -57,18 +36,22 @@ int main(){
             ffree(test[i]);
         i++;
     }
-    i = 25;
-     while (i < 50)
+    i = 99;
+     while (i)
     {
-        random = rand() % 10 + 1;
+        random = rand() % 5;
         printf("\t-- reallocating i: %d for size %d--\n", i, random);
         test[i] = rrealloc(test[i], random);
         for (int j = 0; j < random; j++)
             test[i][j] = 0;
-        i++;
+        i--;
     }
-    // ffree(test[8]);
-    // ffree(test[50]);
-    // ffree(test[9]);
+    i = 100;
+     while (i)
+    {
+        i--;
+        printf("Freeing i: %d\n", i);
+            ffree(test[i]);
+    }
     show_alloc_mem();
 }

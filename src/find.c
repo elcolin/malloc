@@ -34,3 +34,35 @@ t_block *find_free_block(size_t data_size)
     printf("No free blocks\n");
     return NULL;
 }
+
+t_block *find_block(void *ptr)
+{
+    t_heap *current_heap = find_heap(ptr);
+    if (!ptr || !current_heap)
+        return NULL;
+    t_block *index = HEAP_SHIFT(current_heap);
+    while ((void*) index <= (void *)current_heap + current_heap->total_size)
+    {
+        // printf("hereblock");
+        if (ptr == BLOCK_SHIFT(index))
+            return index;
+        index += index->data_size + BLOCK_SIZE;
+    }
+    return NULL;
+}
+
+t_heap *find_heap(void *ptr)
+{
+    t_heap *index = heap_lst;
+    if (!ptr || !index)
+        return NULL;
+    while (index)
+    {
+        // printf("hereheap");
+        if (HEAP_SHIFT(index) <= ptr && ((void *)index + index->total_size) > ptr)
+            return index;
+        index = index->next;
+    }
+    return NULL;
+}
+
