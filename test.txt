@@ -1,0 +1,71 @@
+-- Wanted size for new block: 40	datasize: 8--
+Creating first block: 0x485b028
+prev: (nil)
+	-- Allocating i: 2 0x485b048--
+-- Wanted size for new block: 42	datasize: 10--
+No free blocks
+Appending new block at 0x485b050
+prev: 0x485b028
+	-- Allocating i: 1 0x485b070--
+-- Wanted size for new block: 34	datasize: 2--
+No free blocks
+Appending new block at 0x485b07a
+prev: 0x485b050
+	-- Allocating i: 0 0x485b09a--
+TINY  :  0x485b000
+	0x485b028 - 0x485b030: 8	isfree: 0
+	0x485b050 - 0x485b05a: 10	isfree: 0
+	0x485b07a - 0x485b07c: 2	isfree: 0
+	-- Freeing i: 2 0x485b048 --
+got heap: 0x485b000, trying to find: 0x485b048
+got it
+	-- Freeing i: 1 0x485b070 --
+got heap: 0x485b000, trying to find: 0x485b070
+got it
+0x485b028: prev: (nil)	next: 0x485b050
+0x485b050: prev: 0x485b028	next: 0x485b07a
+	-- Freeing i: 0 0x485b09a --
+got heap: 0x485b000, trying to find: 0x485b09a
+got it
+0x485b028: prev: (nil)	next: 0x485b07a
+0x485b07a: prev: 0x485b028	next: (nil)
+Trying to free heap: 0x485b000
+	-- reallocating i: 2 0x485b068 for size 0 --
+	-- reallocating i: 1 0x485b090 for size 1 --
+-- Wanted size for new block: 33	datasize: 1--
+Creating first block: 0x485b028
+prev: (nil)
+	-- reallocating i: 0 0x485b0ba for size 1 --
+got heap: 0x485b000, trying to find: 0x485b09a
+-- Wanted size for new block: 33	datasize: 1--
+No free blocks
+Appending new block at 0x485b049
+prev: 0x485b028
+	-- Freeing i: 2 (nil) --
+	-- Freeing i: 1 0x485b048 --
+got heap: 0x485b000, trying to find: 0x485b048
+got it
+	-- Freeing i: 0 0x485b069 --
+got heap: 0x485b000, trying to find: 0x485b069
+got it
+0x485b028: prev: (nil)	next: 0x485b049
+0x485b049: prev: 0x485b028	next: (nil)
+Trying to free heap: 0x485b000
+	-- reallocating i: 2 0x20 for size 2--
+-- Wanted size for new block: 34	datasize: 2--
+Creating first block: 0x485b028
+prev: (nil)
+	-- reallocating i: 1 0x485b068 for size 1--
+got heap: 0x485b000, trying to find: 0x485b048
+got it
+heap: 0x485b000	 block: 0x485b028
+	Size below allocation
+	-- reallocating i: 0 0x485b089 for size 0--
+got heap: 0x485b000, trying to find: 0x485b069
+Freeing i: 2 0x485b048
+got heap: 0x485b000, trying to find: 0x485b048
+got it
+Trying to free heap: 0x485b000
+Freeing i: 1 0x485b048
+Block to free not found: 0x485b048
+Freeing i: 0 (nil)

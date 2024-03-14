@@ -26,8 +26,10 @@ void *rrealloc(void *ptr, size_t size)
     if (current_block->next && current_block->next->freed == TRUE && current_block->next->data_size + BLOCK_SIZE >= wanted_size)
     {
         printf("\tNext Block is free\n");
+        // cut_block(current_block->next, );//fixxxxx
+        current_block = merge_block(current_block);
         cut_block(current_block, size);
-        return(BLOCK_SHIFT(merge_block(current_block)));
+        return(BLOCK_SHIFT(current_block));
     }
     if (!current_block->next && current_heap && current_heap->free_size >= wanted_size)
     {

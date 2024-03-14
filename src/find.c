@@ -40,13 +40,18 @@ t_block *find_block(void *ptr)
     t_heap *current_heap = find_heap(ptr);
     if (!ptr || !current_heap)
         return NULL;
+    printf("got heap: %p, trying to find: %p\n", (void *)current_heap, ptr);
     t_block *index = HEAP_SHIFT(current_heap);
-    while ((void*) index <= (void *)current_heap + current_heap->total_size)
+    while (index)
     {
-        // printf("hereblock");
+        // printf("\tindexblock: %p\tindexptr: %p\twanted: %p\n", index, BLOCK_SHIFT(index), ptr);
         if (ptr == BLOCK_SHIFT(index))
+        {
+            // printf("\tindexblock: %p\tindexptr: %p\twanted: %p\n", index, BLOCK_SHIFT(index), ptr);
+            printf("got it\n");
             return index;
-        index += index->data_size + BLOCK_SIZE;
+        }
+        index = index->next;
     }
     return NULL;
 }

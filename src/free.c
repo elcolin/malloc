@@ -29,12 +29,15 @@ void ffree(void *ptr)
         return;
     t_block *block_free = find_block(ptr);
     if (!block_free)
+    {
+        printf("Block to free not found: %p\n", ptr);
         return;
+    }
     block_free->freed = TRUE;
     if (block_free->prev && block_free->prev->freed == TRUE)
         block_free = merge_block(block_free->prev);
     if (block_free->next && block_free->next->freed == TRUE)
         block_free = merge_block(block_free);
     if (!block_free->next && !block_free->prev)
-        free_heap((t_heap *)((void *)block_free - HEAP_SIZE));
+        return free_heap((t_heap *)((void *)block_free - HEAP_SIZE));
 }
