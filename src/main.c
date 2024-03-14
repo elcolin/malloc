@@ -15,8 +15,8 @@ void error(t_bool err, char *msg)
 
 int main(){
 
-    char *test[3] = {"3"};
-    int i = 3;
+    char *test[100] = {"100"};
+    int i = 100;
     int random;
     srand(time(NULL));
     while (i)
@@ -28,7 +28,7 @@ int main(){
         for (int j = 0; j < random; j++)
             test[i][j] = 1;
     }
-    i = 3;
+    i = 100;
     show_alloc_mem();
 
     while (i)
@@ -39,18 +39,18 @@ int main(){
             ffree(test[i]);
     }
     show_alloc_mem();
-    i = 3;
+    i = 100;
      while (i)
     {
         i--;
-        random = rand() % 3;
+        random = rand() % 100;
         printf("\t-- reallocating i: %d %p for size %d --\n", i, BLOCK_SHIFT(test[i]), random);
         test[i] = rrealloc(test[i], random);
         // show_alloc_mem();
         for (int j = 0; j < random; j++)
             test[i][j] = 0;
     }
-    i=3;
+    i=25;
     while (i)
     {
         i--;
@@ -58,18 +58,19 @@ int main(){
         // if (i != 2 && i !=8 && i!= 49 && i!= 9)
             ffree(test[i]);
     }
-    i = 3;
+    i = 75;
      while (i)
     {
         i--;
-        random = rand() % 3;
+        random = rand() % 1000;
         printf("\t-- reallocating i: %d %p for size %d--\n", i, BLOCK_SHIFT(test[i]), random);
         test[i] = rrealloc(test[i], random);
         // show_alloc_mem();
         for (int j = 0; j < random; j++)
             test[i][j] = 0;
     }
-    i=3;
+    i=100;
+    show_alloc_mem();
     while (i)
     {
         i--;
@@ -78,10 +79,11 @@ int main(){
             ffree(test[i]);
     }
     show_alloc_mem();
+
 }
 
-    // i = 23;
-    // while (i < 30)
+    // i = 2100;
+    // while (i < 1000)
     // {
     //     printf("Freeing i: %d %p\n", i, test[i]);
     //     if (i != 2 && i !=8 && i!= 49 && i!= 9)
@@ -91,14 +93,14 @@ int main(){
     // i = 99;
     //  while (i)
     // {
-    //     random = rand() % 3;
+    //     random = rand() % 100;
     //     printf("\t-- reallocating i: %d for size %d--\n", i, random);
     //     test[i] = rrealloc(test[i], random);
     //     for (int j = 0; j < random; j++)
     //         test[i][j] = 0;
     //     i--;
     // }
-    // i = 3;
+    // i = 100;
     //  while (i)
     // {
     //     i--;

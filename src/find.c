@@ -48,7 +48,7 @@ t_block *find_block(void *ptr)
         if (ptr == BLOCK_SHIFT(index))
         {
             // printf("\tindexblock: %p\tindexptr: %p\twanted: %p\n", index, BLOCK_SHIFT(index), ptr);
-            printf("got it\n");
+            // printf("got it\n");
             return index;
         }
         index = index->next;

@@ -18,8 +18,8 @@ t_block *merge_block(t_block *block_to_merge)
 {
     if (!block_to_merge || !block_to_merge->next)
         return block_to_merge;
-    printf("%p: prev: %p\tnext: %p\n", block_to_merge,block_to_merge->prev, block_to_merge->next);
-    printf("%p: prev: %p\tnext: %p\n", block_to_merge->next, block_to_merge->next->prev, block_to_merge->next->next);
+    // printf("%p: prev: %p\tnext: %p\n", block_to_merge,block_to_merge->prev, block_to_merge->next);
+    // printf("%p: prev: %p\tnext: %p\n", block_to_merge->next, block_to_merge->next->prev, block_to_merge->next->next);
     block_to_merge->data_size += block_to_merge->next->data_size + BLOCK_SIZE;
     block_to_merge->next = block_to_merge->next->next;
     if (block_to_merge->next)
@@ -76,7 +76,7 @@ t_block *allocate_new_block(t_heap *available_heap, size_t data_size)
         printf("Creating first block: %p\n", new_block);
         new_block->prev = NULL;
     }
-    printf("prev: %p\n", new_block->prev);
+    // printf("prev: %p\n", new_block->prev);
     new_block->next = NULL;
     new_block->freed = FALSE;
     available_heap->free_size -= (data_size + BLOCK_SIZE);
