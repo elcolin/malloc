@@ -24,14 +24,14 @@ t_block *find_free_block(size_t data_size)
         valid_block = search_valid_free_block(HEAP_SHIFT(get_heap), data_size);
         if (valid_block)
         {
-            printf("Free block found: datasize: %ld\t addr: %p\n", valid_block->data_size, (void *)valid_block);
+            //printf("Free block found: datasize: %ld\t addr: %p\n", valid_block->data_size, (void *)valid_block);
             valid_block->freed = FALSE;
             cut_block(valid_block, data_size);
             return valid_block;
         }
         get_heap = get_heap->next;
     }
-    printf("No free blocks\n");
+    //printf("No free blocks\n");
     return NULL;
 }
 
@@ -40,15 +40,15 @@ t_block *find_block(void *ptr)
     t_heap *current_heap = find_heap(ptr);
     if (!ptr || !current_heap)
         return NULL;
-    printf("got heap: %p, trying to find: %p\n", (void *)current_heap, ptr);
+    //printf("got heap: %p, trying to find: %p\n", (void *)current_heap, ptr);
     t_block *index = HEAP_SHIFT(current_heap);
     while (index)
     {
-        // printf("\tindexblock: %p\tindexptr: %p\twanted: %p\n", index, BLOCK_SHIFT(index), ptr);
+        // //printf("\tindexblock: %p\tindexptr: %p\twanted: %p\n", index, BLOCK_SHIFT(index), ptr);
         if (ptr == BLOCK_SHIFT(index))
         {
-            // printf("\tindexblock: %p\tindexptr: %p\twanted: %p\n", index, BLOCK_SHIFT(index), ptr);
-            // printf("got it\n");
+            // //printf("\tindexblock: %p\tindexptr: %p\twanted: %p\n", index, BLOCK_SHIFT(index), ptr);
+            // //printf("got it\n");
             return index;
         }
         index = index->next;
@@ -63,7 +63,7 @@ t_heap *find_heap(void *ptr)
         return NULL;
     while (index)
     {
-        // printf("hereheap");
+        // //printf("hereheap");
         if (HEAP_SHIFT(index) <= ptr && ((void *)index + index->total_size) > ptr)
             return index;
         index = index->next;

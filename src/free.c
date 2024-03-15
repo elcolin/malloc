@@ -4,7 +4,7 @@ extern t_heap *heap_lst;
 
 void free_heap(t_heap *heap_to_free)
 {
-    printf("Trying to free heap: %p\n", heap_to_free);
+    //printf("Trying to free heap: %p\n", heap_to_free);
     if (!heap_to_free->prev && heap_to_free->next)
     {
         heap_lst = heap_to_free->next;
@@ -30,7 +30,7 @@ void ffree(void *ptr)
     t_block *block_free = find_block(ptr);
     if (!block_free)
     {
-        printf("Block to free not found: %p\n", ptr);
+        //printf("Block to free not found: %p\n", ptr);
         return;
     }
     block_free->freed = TRUE;
