@@ -6,7 +6,7 @@
 #include <sys/mman.h>
 #include <stdlib.h>
 #include <errno.h>
-
+#include <sys/resource.h>
 
 #include <stdio.h>
 #include <string.h>
@@ -55,11 +55,11 @@ typedef struct s_block{
 } t_block;
 
     // -- mandatory --
-void error(t_bool err, char *msg);
-void *mmalloc(size_t size);
-void ffree(void *ptr);
-void show_alloc_mem();
-void *rrealloc(void *ptr, size_t size);
+void    error(t_bool err, char *msg);
+void    *mmalloc(size_t size);
+void    ffree(void *ptr);
+void    show_alloc_mem();
+void    *rrealloc(void *ptr, size_t size);
 
     // -- block.c --
 t_block *allocate_new_block(t_heap *available_heap, size_t data_size);
@@ -67,19 +67,21 @@ void    cut_block(t_block *previous, size_t new_size);
 t_block *merge_block(t_block *block_to_merge);
 
     // -- heap.c --
-t_heap *get_last_heap(t_heap *first);
-t_heap *allocate_new_heap(size_t heap_size, t_heap_size label);
-size_t determine_heap_size(size_t elem_size);
+t_heap  *get_last_heap(t_heap *first);
+t_heap  *allocate_new_heap(size_t heap_size, t_heap_size label);
+size_t  determine_heap_size(size_t elem_size);
 t_heap_size get_heap_label_size(size_t size);
 
     // -- find.c --
 t_block *find_free_block(size_t data_size);
 t_block *search_valid_free_block(t_block *first, size_t data_size);
-t_heap *find_heap(void *ptr);
+t_heap  *find_heap(void *ptr);
 t_block *find_block(void *ptr);
 
-    // -- ft_memcpy.c --
+    // -- utils.c --
 void	*ft_memcpy(void *dst, const void *src, size_t n);
-
+void	ft_putnbr_fd(int n, int fd);
+void	ft_putstr_fd(char *s, int fd);
+size_t	ft_strlen(const char *s);
 
 #endif

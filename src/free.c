@@ -2,6 +2,14 @@
 
 extern t_heap *heap_lst;
 
+void error(t_bool condition, char *msg)
+{
+    if (condition == TRUE)
+    {
+        ft_putstr_fd(msg, 2);
+    }
+}
+
 void free_heap(t_heap *heap_to_free)
 {
     //printf("Trying to free heap: %p\n", heap_to_free);
@@ -29,10 +37,7 @@ void ffree(void *ptr)
         return;
     t_block *block_free = find_block(ptr);
     if (!block_free)
-    {
-        //printf("Block to free not found: %p\n", ptr);
         return;
-    }
     block_free->freed = TRUE;
     if (block_free->prev && block_free->prev->freed == TRUE)
         block_free = merge_block(block_free->prev);
