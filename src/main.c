@@ -16,7 +16,7 @@ void copy_print(char *dest, char *src)
 
 int main()
 {
-    mmalloc(10);
+    // mmalloc(10485760);
     mmalloc(52);
     // {
     //     struct rlimit rlim;
@@ -25,15 +25,15 @@ int main()
     // }
     void *ptr = 0;
 
-    ptr = mmalloc(48815);
+    // ptr = mmalloc(s48815);
     // ffree(ptr);
-    ptr = mmalloc(485);
+    // ptr = mmalloc(485);
 
-    ptr = rrealloc(ptr, 3600000000000093);
+    // ptr = rrealloc(ptr, 36000093);
     ptr = mmalloc(4805);
 
+    (void) ptr;
     show_alloc_mem();
-    printf("%d\n", getpagesize());
     // printf("%ld\n", HEAP_SIZE);
     // struct rlimit rlim;
     // printf("%d\n", getrlimit(RLIMIT_DATA, &rlim));

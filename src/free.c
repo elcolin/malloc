@@ -7,6 +7,7 @@ void error(t_bool condition, char *msg)
     if (condition == TRUE)
     {
         ft_putstr_fd(msg, 2);
+        exit(EXIT_FAILURE);
     }
 }
 

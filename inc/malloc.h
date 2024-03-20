@@ -32,6 +32,11 @@ typedef enum e_bool{
     TRUE
 } t_bool;
 
+typedef enum e_exec{
+    ERROR,
+    SUCCESS
+} t_exec;
+
 typedef enum e_heap{
     TINY,
     SMALL,

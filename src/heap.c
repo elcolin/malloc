@@ -29,21 +29,23 @@ t_heap *get_last_heap(t_heap *first)
     return first;
 }
 
-t_bool get_system_limit(size_t heap_size)
+t_exec get_system_limit(size_t heap_size)
 {
     struct rlimit rlim;
     if (getrlimit(RLIMIT_DATA, &rlim) < 0)
-        return FALSE;
-    if (rlim.rlim_max)
-    return TRUE;
+        return ERROR;
+    if (rlim.rlim_cur != RLIM_INFINITY && rlim.rlim_cur <= heap_size)
+        return ERROR;
+    return SUCCESS;
 }
 
 t_heap *allocate_new_heap(size_t heap_size, t_heap_size label)// go to last heap
-{
+{ 
     t_heap *last_heap = get_last_heap(heap_lst);
     t_heap  *new_heap = 0;
 
-    
+    if (get_system_limit(heap_size) == ERROR)
+        return (ft_putstr_fd("Memory allocation above system limits.\n", 2), NULL);
     new_heap = (t_heap *)mmap(last_heap, heap_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
     if (new_heap == MAP_FAILED) {
         perror("mmap");
