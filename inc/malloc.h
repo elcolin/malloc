@@ -11,21 +11,22 @@
 #include <stdio.h>
 #include <string.h>
 
+// SHIFT TO THE BEGINNING OF THE DATA
 
 #define HEAP_SHIFT(start) ((void *)start + HEAP_SIZE)
 #define BLOCK_SHIFT(start) ((void *)start + BLOCK_SIZE)
 
+// BLOCK SIZE AND HEAP ALLOCATION
+
 #define BLOCK_SIZE (sizeof(t_block))
 #define HEAP_SIZE (sizeof(t_heap))
 
-// BLOCK SIZE AND HEAP ALLOCATION
 #define TINY_HEAP_ALLOCATION_SIZE (4 * getpagesize())
 #define TINY_BLOCK_SIZE (TINY_HEAP_ALLOCATION_SIZE / 128)
 
 #define SMALL_HEAP_ALLOCATION_SIZE (16 * getpagesize())
 #define SMALL_BLOCK_SIZE (SMALL_HEAP_ALLOCATION_SIZE / 128)
 
-// #define LARGE_HEAP_ALLO
 
 typedef enum e_bool{
     FALSE,
