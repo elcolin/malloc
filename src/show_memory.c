@@ -5,10 +5,12 @@ extern t_heap *heap_lst;
 static void addr_to_str(void *addr)
 {
     char    *hexbase = "0123456789ABCDEF";
-    char    str[12] = {0};
+    char    str[13] = {0};
     unsigned long int   res = (long unsigned int) addr;
     int i = 12;
 
+    if (!addr)
+        return;
     while (i--)
     {
         str[i] = hexbase[0xF & res];

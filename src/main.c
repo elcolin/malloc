@@ -25,10 +25,16 @@ int main()
     // }
     void *ptr = 0;
 
-    ptr = mmalloc(3693);
-    ffree(ptr);
-    ptr = rrealloc(ptr, 48815);
+    ptr = mmalloc(48815);
+    // ffree(ptr);
+    ptr = mmalloc(485);
+
+    ptr = rrealloc(ptr, 3600000000000093);
+    ptr = mmalloc(4805);
+
     show_alloc_mem();
+    printf("%d\n", getpagesize());
+    // printf("%ld\n", HEAP_SIZE);
     // struct rlimit rlim;
     // printf("%d\n", getrlimit(RLIMIT_DATA, &rlim));
     // printf("%ld\n", rlim.rlim_max);

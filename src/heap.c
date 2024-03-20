@@ -8,7 +8,7 @@ size_t determine_heap_size(size_t elem_size)
         return TINY_HEAP_ALLOCATION_SIZE;
     else if (elem_size <= SMALL_BLOCK_SIZE - BLOCK_SIZE)
         return SMALL_HEAP_ALLOCATION_SIZE;
-    return (((HEAP_SIZE + elem_size + BLOCK_SIZE) + 15) & ~15);
+    return (((HEAP_SIZE + elem_size + BLOCK_SIZE) + getpagesize()) & ~getpagesize());
 }
 
 t_heap_size get_heap_label_size(size_t size)
@@ -29,27 +29,22 @@ t_heap *get_last_heap(t_heap *first)
     return first;
 }
 
-int get_system_limit()
+t_bool get_system_limit(size_t heap_size)
 {
     struct rlimit rlim;
     if (getrlimit(RLIMIT_DATA, &rlim) < 0)
-        return -errno;
-    return rlim.rlim_cur;
+        return FALSE;
+    if (rlim.rlim_max)
+    return TRUE;
 }
 
 t_heap *allocate_new_heap(size_t heap_size, t_heap_size label)// go to last heap
-{  
+{
     t_heap *last_heap = get_last_heap(heap_lst);
     t_heap  *new_heap = 0;
 
-    printf("%d\n" ,get_system_limit());
-    if (last_heap)
-    {
-        new_heap = (void *)last_heap + last_heap->total_size;
-        // printf("wanted: %p\t%p\t%ld\n", (void *) new_heap, (void *) last_heap,last_heap->total_size);
-
-    }
-    new_heap = (t_heap *)mmap(new_heap, heap_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);// handle error
+    
+    new_heap = (t_heap *)mmap(last_heap, heap_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
     if (new_heap == MAP_FAILED) {
         perror("mmap");
         exit(EXIT_FAILURE);
