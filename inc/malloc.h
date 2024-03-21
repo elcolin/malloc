@@ -27,6 +27,10 @@
 #define SMALL_HEAP_ALLOCATION_SIZE (16 * getpagesize())
 #define SMALL_BLOCK_SIZE (SMALL_HEAP_ALLOCATION_SIZE / 128)
 
+// ALIGN MEMORY ON BYTES SCALE
+
+#define align4(x) (((((x) - 1) >> 2) << 2) + 4)
+
 
 typedef enum e_bool{
     FALSE,
@@ -61,7 +65,6 @@ typedef struct s_block{
 } t_block;
 
     // -- mandatory --
-void    error(t_bool err, char *msg);
 void    *mmalloc(size_t size);
 void    ffree(void *ptr);
 void    show_alloc_mem();
@@ -80,7 +83,6 @@ t_heap_size get_heap_label_size(size_t size);
 
     // -- find.c --
 t_block *find_free_block(size_t data_size);
-t_block *search_valid_free_block(t_block *first, size_t data_size);
 t_heap  *find_heap(void *ptr);
 t_block *find_block(void *ptr);
 
@@ -88,6 +90,5 @@ t_block *find_block(void *ptr);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 void	ft_putnbr_fd(int n, int fd);
 void	ft_putstr_fd(char *s, int fd);
-size_t	ft_strlen(const char *s);
 
 #endif

@@ -2,7 +2,7 @@
 
 extern t_heap *heap_lst;
 
-t_block *search_valid_free_block(t_block *first, size_t data_size)
+static t_block *search_valid_free_block(t_block *first, size_t data_size)
 {
     if (!first)
         return NULL;

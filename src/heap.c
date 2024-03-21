@@ -29,7 +29,7 @@ t_heap *get_last_heap(t_heap *first)
     return first;
 }
 
-t_exec get_system_limit(size_t heap_size)
+static t_exec get_system_limit(size_t heap_size)
 {
     struct rlimit rlim;
     if (getrlimit(RLIMIT_DATA, &rlim) < 0)

@@ -14,20 +14,21 @@ void *rrealloc(void *ptr, size_t size)
     if (!size)
     //Size is null and address valid, freeing address
         return (ffree(ptr), NULL);
-    if (current_block->data_size >= size)// Size is below or equal to allocation
+    size = align4(size);
+    if (current_block->data_size >= size)
     //Size is below allocation
         return (cut_block(current_block, size), ptr);
             
-    size_t wanted_size = size - current_block->data_size;
-    if (current_block->next && current_block->next->freed == TRUE && current_block->next->data_size + BLOCK_SIZE >= wanted_size)
+    size_t size_to_add = size - current_block->data_size;
+    if (current_block->next && current_block->next->freed == TRUE && current_block->next->data_size + BLOCK_SIZE >= size_to_add)
     {//Next Block is free
         current_block = merge_block(current_block);
         return(cut_block(current_block, size), BLOCK_SHIFT(current_block));
     }
-    if (!current_block->next && current_heap && current_heap->free_size >= wanted_size)
+    if (!current_block->next && current_heap && current_heap->free_size >= size_to_add)
     {//End of heap is free
-        current_block->data_size += wanted_size;
-        current_heap->free_size -= wanted_size;
+        current_block->data_size += size_to_add;
+        current_heap->free_size -= size_to_add;
         return (BLOCK_SHIFT(current_block));
     }
     void *new_ptr = 0;
