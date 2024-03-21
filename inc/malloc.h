@@ -72,7 +72,7 @@ void    *rrealloc(void *ptr, size_t size);
 
     // -- block.c --
 t_block *allocate_new_block(t_heap *available_heap, size_t data_size);
-void    cut_block(t_block *previous, size_t new_size);
+void    cut_block(t_block *block_to_cut, size_t new_size);
 t_block *merge_block(t_block *block_to_merge);
 
     // -- heap.c --
