@@ -20,13 +20,25 @@ t_heap_size get_heap_label_size(size_t size)
     return LARGE;
 }
 
-t_heap *get_last_heap(t_heap *first)
+static t_heap *get_last_heap(t_heap *first)
 {
     if (!first)
         return NULL;
     while(first->next)
         first = first->next;
     return first;
+}
+
+t_heap  *get_available_heap(size_t wanted_size)
+{
+    t_heap *first = heap_lst;
+    while (first)
+    {
+        if (first->free_size >= wanted_size)
+            return first;
+        first = first->next;
+    }
+    return NULL;
 }
 
 static t_exec get_system_limit(size_t heap_size)

@@ -26,7 +26,7 @@ void *rrealloc(void *ptr, size_t size)
         return(cut_block(current_block, size), BLOCK_SHIFT(current_block));
     }
     if (!current_block->next && current_heap && current_heap->free_size >= size_to_add)
-    {//End of heap is free
+    {//Address is at the end of the heap is free and space is available
         current_block->data_size += size_to_add;
         current_heap->free_size -= size_to_add;
         return (BLOCK_SHIFT(current_block));
@@ -38,6 +38,4 @@ void *rrealloc(void *ptr, size_t size)
     new_ptr = ft_memcpy(new_ptr, ptr, old_size);
     ffree(ptr);
     return(new_ptr);
-}   
-
-    // t_heap  *current_heap = (t_heap *)((void *)(first) - HEAP_SIZE);
+}

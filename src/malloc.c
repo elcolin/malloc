@@ -13,8 +13,7 @@ void *mmalloc(size_t size){
         new_block = find_free_block(size);// looking for a block in each heap
     if (!new_block)
     {//If no free blocks suits conditions
-        t_heap *last_heap = get_last_heap(heap_lst);
-        new_block = allocate_new_block(last_heap, size);
+        new_block = allocate_new_block(get_available_heap(size + BLOCK_SIZE), size);
         if (!new_block)//If no space is available at the end of the heap
             new_block = allocate_new_block(allocate_new_heap(determine_heap_size(size), get_heap_label_size(size)), size);
     }

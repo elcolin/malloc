@@ -76,7 +76,7 @@ void    cut_block(t_block *block_to_cut, size_t new_size);
 t_block *merge_block(t_block *block_to_merge);
 
     // -- heap.c --
-t_heap  *get_last_heap(t_heap *first);
+t_heap  *get_available_heap(size_t wanted_size);
 t_heap  *allocate_new_heap(size_t heap_size, t_heap_size label);
 size_t  determine_heap_size(size_t elem_size);
 t_heap_size get_heap_label_size(size_t size);
