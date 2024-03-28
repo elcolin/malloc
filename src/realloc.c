@@ -1,19 +1,19 @@
 #include "../inc/malloc.h"
 
-void *rrealloc(void *ptr, size_t size)
+void *realloc(void *ptr, size_t size)
 {
     if (!ptr)
-        return(mmalloc(size));
+        return(malloc(size));
 
     t_heap *current_heap = find_heap(ptr);
     t_block *current_block = find_block(ptr);
 
     if (!current_heap || !current_block)
     //Heap isn't allocated or address isn't valid
-        return(mmalloc(size));
+        return(malloc(size));
     if (!size)
     //Size is null and address valid, freeing address
-        return (ffree(ptr), NULL);
+        return (free(ptr), NULL);
     size = align4(size);
     if (current_block->data_size >= size)
     //Size is below allocation
@@ -34,8 +34,8 @@ void *rrealloc(void *ptr, size_t size)
     void *new_ptr = 0;
     size_t old_size = current_block->data_size;
 
-    new_ptr = mmalloc(size);
+    new_ptr = malloc(size);
     new_ptr = ft_memcpy(new_ptr, ptr, old_size);
-    ffree(ptr);
+    free(ptr);
     return(new_ptr);
 }

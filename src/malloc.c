@@ -2,7 +2,7 @@
 
 t_heap *heap_lst = 0;
 
-void *mmalloc(size_t size){
+void *malloc(size_t size){
     if (!size)
         return NULL;
     t_block *new_block = 0;

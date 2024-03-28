@@ -65,10 +65,10 @@ typedef struct s_block{
 } t_block;
 
     // -- mandatory --
-void    *mmalloc(size_t size);
-void    ffree(void *ptr);
+void    *malloc(size_t size);
+void    free(void *ptr);
 void    show_alloc_mem();
-void    *rrealloc(void *ptr, size_t size);
+void    *realloc(void *ptr, size_t size);
 
     // -- block.c --
 t_block *allocate_new_block(t_heap *available_heap, size_t data_size);

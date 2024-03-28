@@ -24,7 +24,7 @@ static void free_heap(t_heap *heap_to_free)
 
 }
 
-void ffree(void *ptr)
+void free(void *ptr)
 {
     if(!ptr)
         return;

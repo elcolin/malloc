@@ -43,8 +43,8 @@ static void    print_heap(t_heap *heap)
     ft_putstr_fd(label_str[heap->label_size], 1);
     ft_putstr_fd(" : ", 1);
     addr_to_str((void *) heap);
-    ft_putstr_fd("\tsize: ", 1);
-    ft_putnbr_fd(heap->total_size, 1);
+    // ft_putstr_fd("\tsize: ", 1);
+    // ft_putnbr_fd(heap->total_size, 1);
     ft_putstr_fd("\n", 1);
 }
 

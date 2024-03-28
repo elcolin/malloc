@@ -18,7 +18,7 @@ int main()
         random = rand() % 100;
         if (!test[random])
         {
-            test[random] = mmalloc(j = rand() % max_mem);
+            test[random] = malloc(j = rand() % (max_mem +1));
             while (j)
             {
                 j--;
@@ -26,12 +26,12 @@ int main()
             }
         }
     }
-    show_alloc_mem();
+    // show_alloc_mem();
     max_mem = rand() % 200;
     for (int i = 0; i < 100; i++)
     {
         random = rand() % 100;
-        test[random] = rrealloc(test[random], j = rand() % max_mem);
+        test[random] = realloc(test[random], j = rand() % max_mem + 1);
         if (j)
         {
             // ft_putnbr_fd(j, 2);
@@ -43,13 +43,13 @@ int main()
             j--;
             test[random][j] = 'a';
         }
-        if (test[random])
-            printf("%s\n", test[random]);
+        // if (test[random])
+        //     printf("%s\n", test[random]);
     }
     show_alloc_mem();
     for (int i = 0; i < 100; i++)
     {
-        ffree(test[i]);
+        free(test[i]);
     }
     show_alloc_mem();
 }
