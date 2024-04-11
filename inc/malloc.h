@@ -88,7 +88,7 @@ t_block *find_block(void *ptr);
 
     // -- utils.c --
 void	*ft_memcpy(void *dst, const void *src, size_t n);
-void	ft_putnbr_fd(int n, int fd);
+void	ft_putnbr_fd(__uint64_t n, int fd);
 void	ft_putstr_fd(char *s, int fd);
 
 #endif

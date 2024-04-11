@@ -35,7 +35,8 @@ void *realloc(void *ptr, size_t size)
     size_t old_size = current_block->data_size;
 
     new_ptr = malloc(size);
-    new_ptr = ft_memcpy(new_ptr, ptr, old_size);
+    if (new_ptr)
+        new_ptr = ft_memcpy(new_ptr, ptr, old_size);
     free(ptr);
     return(new_ptr);
 }

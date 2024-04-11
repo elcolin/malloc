@@ -41,12 +41,28 @@ t_heap  *get_available_heap(size_t wanted_size)
     return NULL;
 }
 
+// __uint64_t  get_total_memory_size()
+// {
+//     t_heap *index = heap_lst;
+//     void *last_addr;
+//     // __uint64_t  total_size = 0;
+//     while (index)
+//     {
+//         // total_size += index->total_size;
+//         if (!index->next)
+//             last_addr = (void *)index + index->total_size;
+//         index = index->next;
+//     }
+//     return (__uint64_t)(last_addr - (void*)heap_lst) ;
+// }
+
 static t_exec get_system_limit(size_t heap_size)
 {
     struct rlimit rlim;
-    if (getrlimit(RLIMIT_DATA, &rlim) < 0)
+    if (getrlimit(RLIMIT_AS, &rlim) < 0)
         return ERROR;
-    if (rlim.rlim_cur != RLIM_INFINITY && rlim.rlim_cur <= heap_size)
+    // printf("currentlimit: %lld\twanted: %llu\n", rlim.rlim_max , (heap_size) + get_total_memory_size());
+    if (rlim.rlim_cur != RLIM_INFINITY && rlim.rlim_cur <= (heap_size) /*+ get_total_memory_size()*/)
         return ERROR;
     return SUCCESS;
 }
@@ -61,7 +77,7 @@ t_heap *allocate_new_heap(size_t heap_size, t_heap_size label)// go to last heap
     new_heap = (t_heap *)mmap(last_heap, heap_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
     if (new_heap == MAP_FAILED) {
         perror("mmap");
-        exit(EXIT_FAILURE);
+        return NULL;
     }
     new_heap->label_size = label;
     new_heap->prev = last_heap;

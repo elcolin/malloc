@@ -29,15 +29,15 @@ static void	ft_putchar_fd(char c, int fd)
 	write (fd, &c, 1);
 }
 
-void	ft_putnbr_fd(int n, int fd)
+void	ft_putnbr_fd(__uint64_t n, int fd)
 {
-	long int	m;
+	__uint64_t	m;
 
 	m = n;
-	if (m < 0)
-		m *= -1;
-	if (n < 0)
-		ft_putchar_fd('-', fd);
+	// if (m < 0)
+	// 	m *= -1;
+	// if (n < 0)
+	// 	ft_putchar_fd('-', fd);
 	if (m >= 10)
 		ft_putnbr_fd(m / 10, fd);
 	ft_putchar_fd(m % 10 + '0', fd);
