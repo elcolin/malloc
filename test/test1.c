@@ -25,9 +25,9 @@ int main(int argc, char *argv[])
     ft_putstr_fd("\n ",1);
     test = realloc(test, len2);
 
-    ft_putstr_fd("\t-- after realloc before copy --\n",1);
-    ft_putstr_fd(test, 1);
-    ft_putstr_fd("\n ",1);
+    // ft_putstr_fd("\t-- after realloc before copy --\n",1);
+    // ft_putstr_fd(test, 1);
+    // ft_putstr_fd("\n ",1);
 
     ft_putstr_fd("\t -- after realloc and copy --\n",1);
     ft_strlcpy(test, argv[2], len2);

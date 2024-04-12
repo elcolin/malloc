@@ -21,14 +21,14 @@ FLAGS_LIB = -shared
 all: $(NAME)
 
 $(NAME): $(OBJECTS)
-	$(CC) -fsanitize=address -g3 $(FLAGS_LIB) -o $@ $(OBJECTS)
+	$(CC) $(FLAGS_LIB) -o $@ $(OBJECTS)
 	@rm -f $(LIB_NAME)
 	ln -s $(NAME) $(LIB_NAME)
 	@echo "Make done"
 
 $(PATH_OBJ)/%.o: $(PATH_SRC)/%.c
 	@mkdir -p $(@D)
-	$(CC) -c -o $@ $(FLAGS_CC) $^ -O0 -g -I $(PATH_INC) -fsanitize=address  -g3
+	$(CC) -c -o $@ $(FLAGS_CC) $^ -O0 -g -I $(PATH_INC)
 
 clean:
 	@rm -rf $(PATH_OBJ)
