@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "inc/malloc.h"
 
 void    print(char *s)
 {

@@ -75,6 +75,9 @@ t_heap *allocate_new_heap(size_t heap_size, t_heap_size label)// go to last heap
     if (get_system_limit(heap_size) == ERROR)
         return (ft_putstr_fd("Memory allocation above system limits.\n", 2), NULL);
     new_heap = (t_heap *)mmap(last_heap, heap_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+    ft_putstr_fd("mallocated: ",1);
+    addr_to_str(new_heap);
+    ft_putstr_fd("\n",1);
     if (new_heap == MAP_FAILED) {
         perror("mmap");
         return NULL;

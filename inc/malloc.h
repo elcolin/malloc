@@ -21,7 +21,7 @@
 #define BLOCK_SIZE (sizeof(t_block))
 #define HEAP_SIZE (sizeof(t_heap))
 
-#define TINY_HEAP_ALLOCATION_SIZE (4 * getpagesize())
+#define TINY_HEAP_ALLOCATION_SIZE (8 * getpagesize())
 #define TINY_BLOCK_SIZE (TINY_HEAP_ALLOCATION_SIZE / 128)
 
 #define SMALL_HEAP_ALLOCATION_SIZE (16 * getpagesize())
@@ -29,7 +29,8 @@
 
 // ALIGN MEMORY ON BYTES SCALE
 
-#define align4(x) (((((x) - 1) >> 2) << 2) + 4)
+// #define align16(x) (((((x) - 1) >> 2) << 2) + 4)
+#define align16(x) (((x) + 15) & ~15)
 
 
 typedef enum e_bool{
@@ -90,5 +91,7 @@ t_block *find_block(void *ptr);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 void	ft_putnbr_fd(__uint64_t n, int fd);
 void	ft_putstr_fd(char *s, int fd);
+
+/*static*/ void addr_to_str(void *addr);
 
 #endif

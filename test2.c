@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+# include "inc/malloc.h"
+
 
 void    print(char *s)
 {
@@ -13,7 +15,7 @@ int     main(void)
     char  *addr;
 
     i = 0;
-    while (i < 1024)
+    while (i < 1024) 
     {
         addr = (char*)malloc(1024);
         if (addr == NULL)
@@ -22,7 +24,10 @@ int     main(void)
             return (1);
         }
         addr[0] = 42;
-        i++;
+        free(addr); 
+        i++; 
     }
+    
+    show_alloc_mem();
     return (0);
 }

@@ -19,9 +19,14 @@ static void free_heap(t_heap *heap_to_free)
     }
     else if (!heap_to_free->prev && !heap_to_free->next)
     //If heap is alone
-        heap_lst = 0;
-    munmap(heap_to_free, heap_to_free->total_size);
-
+        return;
+    if(munmap((void *)heap_to_free, heap_to_free->total_size))
+    {
+        perror("munmap");
+        return;
+    }
+    addr_to_str(heap_to_free);
+    ft_putstr_fd(" got freed\n", 1);
 }
 
 void free(void *ptr)

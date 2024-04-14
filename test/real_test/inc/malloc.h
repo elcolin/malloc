@@ -29,7 +29,7 @@
 
 // ALIGN MEMORY ON BYTES SCALE
 
-#define align4(x) (((((x) - 1) >> 2) << 2) + 4)
+#define align16(x) (((((x) - 1) >> 2) << 2) + 4)
 
 
 typedef enum e_bool{

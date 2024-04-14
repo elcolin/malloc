@@ -14,7 +14,7 @@ void *realloc(void *ptr, size_t size)
     if (!size)
     //Size is null and address valid, freeing address
         return (free(ptr), NULL);
-    size = align4(size);
+    size = align16(size);
     if (current_block->data_size >= size)
     //Size is below allocation
         return (cut_block(current_block, size), ptr);

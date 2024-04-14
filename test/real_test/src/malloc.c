@@ -6,8 +6,7 @@ void *malloc(size_t size){
     if (!size)
         return NULL;
     t_block *new_block = 0;
-
-    size = align4(size);
+    size = align16(size);
     if (!heap_lst) // If no heap create new heap
         heap_lst = allocate_new_heap(determine_heap_size(size), get_heap_label_size(size));
     else

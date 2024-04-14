@@ -2,7 +2,7 @@
 
 extern t_heap *heap_lst;
 
-static void addr_to_str(void *addr)
+/*static*/ void addr_to_str(void *addr)
 {
     char    *hexbase = "0123456789ABCDEF";
     char    str[13] = {0};
