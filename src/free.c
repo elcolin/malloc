@@ -25,8 +25,8 @@ static void free_heap(t_heap *heap_to_free)
         perror("munmap");
         return;
     }
-    addr_to_str(heap_to_free);
-    ft_putstr_fd(" got freed\n", 1);
+    // addr_to_str(heap_to_free);
+    // ft_putstr_fd(" got freed\n", 1);
 }
 
 void free(void *ptr)

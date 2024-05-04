@@ -4,18 +4,18 @@ extern t_heap *heap_lst;
 
 size_t determine_heap_size(size_t elem_size)
 {
-    if (elem_size <= TINY_BLOCK_SIZE - BLOCK_SIZE)
+    if (elem_size <= (size_t) TINY_HEAP_ALLOCATION_SIZE / 128)
         return TINY_HEAP_ALLOCATION_SIZE;
-    else if (elem_size <= SMALL_BLOCK_SIZE - BLOCK_SIZE)
+    else if (elem_size <= (size_t) SMALL_HEAP_ALLOCATION_SIZE / 128)
         return SMALL_HEAP_ALLOCATION_SIZE;
     return (((HEAP_SIZE + elem_size + BLOCK_SIZE) + getpagesize()) & ~getpagesize());
 }
 
 t_heap_size get_heap_label_size(size_t size)
 {
-    if (size <= (size_t) TINY_BLOCK_SIZE - BLOCK_SIZE)
+    if (size <= (size_t) TINY_HEAP_ALLOCATION_SIZE / 128)
         return TINY;
-    else if (size <= (size_t) SMALL_BLOCK_SIZE - BLOCK_SIZE)
+    else if (size <= (size_t) SMALL_HEAP_ALLOCATION_SIZE / 128)
         return SMALL;
     return LARGE;
 }
@@ -29,12 +29,12 @@ static t_heap *get_last_heap(t_heap *first)
     return first;
 }
 
-t_heap  *get_available_heap(size_t wanted_size)
+t_heap  *get_available_heap(size_t wanted_size, t_heap_size heap_label)
 {
     t_heap *first = heap_lst;
     while (first)
     {
-        if (first->free_size >= wanted_size)
+        if (heap_label == first->label_size && first->free_size >= wanted_size)
             return first;
         first = first->next;
     }
@@ -75,9 +75,8 @@ t_heap *allocate_new_heap(size_t heap_size, t_heap_size label)// go to last heap
     if (get_system_limit(heap_size) == ERROR)
         return (ft_putstr_fd("Memory allocation above system limits.\n", 2), NULL);
     new_heap = (t_heap *)mmap(last_heap, heap_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
-    ft_putstr_fd("mallocated: ",1);
-    addr_to_str(new_heap);
-    ft_putstr_fd("\n",1);
+
+    // ft_putstr_fd("\n",1);
     if (new_heap == MAP_FAILED) {
         perror("mmap");
         return NULL;

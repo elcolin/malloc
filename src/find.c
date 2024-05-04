@@ -15,12 +15,25 @@ static t_block *search_valid_free_block(t_block *first, size_t data_size)
     return NULL;
 }
 
+	// if (wanted_heap == TINY)
+	// 	ft_putstr_fd("TINY\n",1);
+	// if (wanted_heap == SMALL)
+	// 	ft_putstr_fd("SMALL\n",1);
+	// if (wanted_heap == LARGE)
+	// 	ft_putstr_fd("LARGE\n",1);
+
 t_block *find_free_block(size_t data_size)
 {
     t_heap *get_heap = heap_lst;
     t_block *valid_block = 0;
+	t_heap_size wanted_heap = get_heap_label_size(data_size);
     while (get_heap)
     {
+		if (wanted_heap != get_heap->label_size)
+		{
+        	get_heap = get_heap->next;
+			continue;
+		}
         valid_block = search_valid_free_block(HEAP_SHIFT(get_heap), data_size);
         if (valid_block)
         {

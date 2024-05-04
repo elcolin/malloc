@@ -3,6 +3,7 @@
 #include <unistd.h>
 
 #include <stdio.h>
+#include "inc/malloc.h"
 
 void print(char *s)
 {
@@ -17,10 +18,11 @@ int     main()
 
     i = 1;
     alignment = 2 * sizeof(size_t);
-    printf("%d\n",alignment);
+    // printf("%d\n",alignment);
     while (i <= 100)
     {
         addr = (char*)malloc(i);
+		// show_alloc_mem();
         if (addr == NULL)
         {
             print("Failed to allocate memory\n");

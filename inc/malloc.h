@@ -13,24 +13,27 @@
 
 // SHIFT TO THE BEGINNING OF THE DATA
 
+#define align16(x) (((x) + 15) & ~15)
+
+
 #define HEAP_SHIFT(start) ((void *)start + HEAP_SIZE)
 #define BLOCK_SHIFT(start) ((void *)start + BLOCK_SIZE)
 
 // BLOCK SIZE AND HEAP ALLOCATION
 
 #define BLOCK_SIZE (sizeof(t_block))
-#define HEAP_SIZE (sizeof(t_heap))
+#define HEAP_SIZE (align16(sizeof(t_heap)))
 
-#define TINY_HEAP_ALLOCATION_SIZE (8 * getpagesize())
+#define TINY_HEAP_ALLOCATION_SIZE (getpagesize())
 #define TINY_BLOCK_SIZE (TINY_HEAP_ALLOCATION_SIZE / 128)
 
-#define SMALL_HEAP_ALLOCATION_SIZE (16 * getpagesize())
+#define SMALL_HEAP_ALLOCATION_SIZE (getpagesize() * 8)
 #define SMALL_BLOCK_SIZE (SMALL_HEAP_ALLOCATION_SIZE / 128)
 
 // ALIGN MEMORY ON BYTES SCALE
 
 // #define align16(x) (((((x) - 1) >> 2) << 2) + 4)
-#define align16(x) (((x) + 15) & ~15)
+// #define align16(x) (((x) + 15) & ~15)
 
 
 typedef enum e_bool{
@@ -77,7 +80,7 @@ void    cut_block(t_block *block_to_cut, size_t new_size);
 t_block *merge_block(t_block *block_to_merge);
 
     // -- heap.c --
-t_heap  *get_available_heap(size_t wanted_size);
+t_heap  *get_available_heap(size_t wanted_size, t_heap_size heap_label);
 t_heap  *allocate_new_heap(size_t heap_size, t_heap_size label);
 size_t  determine_heap_size(size_t elem_size);
 t_heap_size get_heap_label_size(size_t size);
