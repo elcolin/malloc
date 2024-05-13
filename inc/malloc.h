@@ -24,10 +24,10 @@
 #define BLOCK_SIZE (sizeof(t_block))
 #define HEAP_SIZE (align16(sizeof(t_heap)))
 
-#define TINY_HEAP_ALLOCATION_SIZE (getpagesize())
+#define TINY_HEAP_ALLOCATION_SIZE (getpagesize() * 16)
 #define TINY_BLOCK_SIZE (TINY_HEAP_ALLOCATION_SIZE / 128)
 
-#define SMALL_HEAP_ALLOCATION_SIZE (getpagesize() * 8)
+#define SMALL_HEAP_ALLOCATION_SIZE (getpagesize() * 32)
 #define SMALL_BLOCK_SIZE (SMALL_HEAP_ALLOCATION_SIZE / 128)
 
 // ALIGN MEMORY ON BYTES SCALE
